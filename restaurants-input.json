@@ -1,0 +1,36 @@
+{
+	"links-evaluator" : {
+		"resultsFile" : "restaurants/effectiveness.csv",
+		"goldStandardFile" : "restaurants/restaurants-gold.nt",
+		"linksFile" : "",
+	},
+	"pathfinder" : {
+		"searchForward" : "true",
+		"searchBackwards" : "true",
+		"maxSerachDepth" : "10"
+	},
+	"resultsFolder"  : "restaurants",
+	"outputMainRuleLinks"  :"true",
+	"outputMainRuleLinksFile" : "restaurants/mainLinks.nt",
+	"filteredLinksFile" : "restaurants/filtered.nt",
+	"sourceDataset"  : "tdb-data/restaurants1",
+	"targetDataset"  : "tdb-data/restaurants2",
+	"mainLinkRule"  : {
+			"sourceClasses" : ["http://www.okkam.org/ontology_restaurant1.owl#Restaurant"],
+			"targetClasses" : ["http://www.okkam.org/ontology_restaurant2.owl#Restaurant"],
+			"restriction" : "agg:Mult(str:JaroWinklerTFIDFSimilarity(http://www.okkam.org/ontology_restaurant1.owl#name,http://www.okkam.org/ontology_restaurant2.owl#name,0.8),0.62)"
+	},
+	"supportingRules" : [
+			{
+				"sourceClasses" : ["http://www.okkam.org/ontology_restaurant1.owl#Address"],
+				"targetClasses" : ["http://www.okkam.org/ontology_restaurant2.owl#Address"],
+				"restriction" : "agg:Mult(str:JaroWinklerTFIDFSimilarity(http://www.okkam.org/ontology_restaurant1.owl#street,http://www.okkam.org/ontology_restaurant2.owl#street,0.8),0.62)"
+			},
+			{
+				"sourceClasses" : ["http://www.okkam.org/ontology_restaurant1.owl#City"],
+				"targetClasses" : ["http://www.okkam.org/ontology_restaurant2.owl#Address"],
+				"restriction" : "agg:Mult(str:JaroWinklerTFIDFSimilarity(http://www.okkam.org/ontology_restaurant1.owl#name,http://www.okkam.org/ontology_restaurant2.owl#city,0.8),0.62)"
+			}
+		],
+ 
+}

@@ -1,0 +1,35 @@
+{
+	"links-evaluator" : {
+		"resultsFile" : "rae-newcastle/effectiveness.csv",
+		"goldStandardFile" : "rae-newcastle/rae-newcastle-gold.nt",
+		"linksFile" : "[Dynamically specified in the code]",
+	},
+	"pathfinder" : {
+		"searchForward" : "true",
+		"searchBackwards" : "true",
+		"maxSerachDepth" : "2"
+	},
+	"resultsFolder"  : "rae-newcastle",
+	"outputMainRuleLinks"  :"true",
+	"outputMainRuleLinksFile" : "rae-newcastle/mainLinks.nt",
+	"filteredLinksFile" : "rae-newcastle/filtered.nt",
+	"sourceDataset"  : "tdb-data/rae",
+	"targetDataset"  : "tdb-data/newcastle",
+	"mainLinkRule"  : {
+			"sourceClasses" : ["http://schema.org/RaeNewcastleTarget"],
+			"targetClasses" : ["http://schema.org/RaeNewcastleTarget"],
+			"restriction" : "agg:Mult(str:LevenshteinSimilarity(http://www.aktors.org/ontology/portal#has-title,http://www.aktors.org/ontology/portal#has-title,0.30), str:OverlapSimilarity(http://www.aktors.org/ontology/portal#has-page-numbers,http://www.aktors.org/ontology/portal#has-page-numbers,0.82))"
+	},
+	"supportingRules" : [
+			{
+				"sourceClasses" : ["http://www.aktors.org/ontology/portal#Academic"],
+				"targetClasses" : ["http://www.aktors.org/ontology/portal#Lecturer-In-Academia"],
+				"restriction" : "str:JaroWinklerTFIDFSimilarity(http://www.aktors.org/ontology/portal#family-name,http://www.aktors.org/ontology/portal#family-name,0.5)"
+			},
+			{
+				"sourceClasses" : ["http://www.aktors.org/ontology/portal#Academic"],
+				"targetClasses" : ["http://www.aktors.org/ontology/portal#Person"],
+				"restriction" : "str:JaroWinklerTFIDFSimilarity(http://www.aktors.org/ontology/portal#family-name,http://www.aktors.org/ontology/portal#family-name,0.5)"
+			},
+		],
+}
