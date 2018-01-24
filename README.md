@@ -84,12 +84,44 @@ Relying on our 'Restaurants' test, its input file 'restaurants-input.json' is as
 }
 ```
 
+To build link rules Teide relies on the following functions:
+
+	### Aggregate metrics
+	* agg:Avg
+	* agg:Max
+	* agg:Min
+	* agg:Mult
+
+	## String metrics:
+
+	* str:CosineSimilarity
+	* str:JaccardSimilarity
+	* str:JaroSimilarity
+	* str:JaroWinklerSimilarity
+	* str:JaroWinklerTFIDFSimilarity
+	* str:LevenshteinSimilarity
+	* str:OverlapSimilarity
+	* str:QGramsSimilarity
+	* str:SoftTFIDFSimilarity
+	* str:SubstringSimilarity
+	* str:TrigramsSimilarity
+
+	# Transformation metrics:
+
+	* trn:LowercaseTransformation
+	* trn:RemoveSymbolsTransformation
+	* trn:StemTransformation
+	* trn:StripUriPrefixTransformation
+	* trn:TokenizeTransformation
+	* trn:UpercaseTransformation
+
+
+
 
 
 ## Authors
 
-* **Andrea Cimmino** - [PurpleBooth](http://www.tdg-seville.info/acimmino/Home)
-
+* **[Andrea Cimmino](http://www.tdg-seville.info/acimmino/Home)**
 
 ## License
 
