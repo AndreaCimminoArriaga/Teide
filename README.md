@@ -86,13 +86,14 @@ Relying on our 'Restaurants' test, its input file 'restaurants-input.json' is as
 
 To build link rules Teide relies on the following functions:
 
-	### Aggregate metrics
+# Aggregate metrics
+
 	* agg:Avg
 	* agg:Max
 	* agg:Min
 	* agg:Mult
 
-	## String metrics:
+### String metrics:
 
 	* str:CosineSimilarity
 	* str:JaccardSimilarity
@@ -106,7 +107,7 @@ To build link rules Teide relies on the following functions:
 	* str:SubstringSimilarity
 	* str:TrigramsSimilarity
 
-	# Transformation metrics:
+## Transformation metrics:
 
 	* trn:LowercaseTransformation
 	* trn:RemoveSymbolsTransformation
