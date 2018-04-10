@@ -40,7 +40,7 @@ public class TeideMain {
 		List<String> results = null;
 		
 		// Retrieve configuration file
-		parametersFile = "./rae-newcastle-input.json";
+		parametersFile = "./restaurants-input.json";
 		results = Lists.newArrayList();
 		
 		// Execute Teide and store results

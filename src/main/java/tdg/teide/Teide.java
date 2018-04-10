@@ -2,6 +2,7 @@ package tdg.teide;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -66,10 +67,15 @@ public class Teide  {
 			targetPaths = retrieveConnectingPaths(parameters.getTargetDataset(), parameters.getMainRule().getTargetRestrictions(), supporting.getTargetRestrictions());
 			
 			// If paths were found
-			if(!sourcePaths.isEmpty() && !targetPaths.isEmpty()) {
+			if(!sourcePaths.isEmpty() || !targetPaths.isEmpty()) {
+				System.out.println("######@@@@@@#######");
+				System.out.println(sourcePaths);
+				System.out.println(targetPaths);
 				// Combine every possible path
-				Set<List<Path>> navigablePaths = Sets.cartesianProduct(sourcePaths,targetPaths);
+				Set<List<Path>> navigablePaths = combinePathsCartesianProduct(sourcePaths, targetPaths);
 				for(List<Path> paths : navigablePaths) {
+					System.out.println("-"+paths.get(0));
+					System.out.println("-"+paths.get(1));
 					FrameworkConfiguration.traceLog.addLogLine(Teide.class.getCanonicalName(), "\tExploring paths: ");
 					FrameworkConfiguration.traceLog.addLogLine(Teide.class.getCanonicalName(), "\t\t Path source: "+paths.get(0));
 					FrameworkConfiguration.traceLog.addLogLine(Teide.class.getCanonicalName(), "\t\t Path target: "+paths.get(1));
@@ -88,6 +94,29 @@ public class Teide  {
 	}
 	
 
+	@SuppressWarnings("unchecked")
+	private Set<List<Path>> combinePathsCartesianProduct(Set<Path> sourcePaths, Set<Path> targetPaths){
+		Set<List<Path>> cartesianProduct = Sets.newHashSet();
+		
+		if(sourcePaths.isEmpty()) {
+			targetPaths.forEach(tPath -> cartesianProduct.add(emptyPathTuple(null, tPath)));
+		}else if(targetPaths.isEmpty()) {
+			sourcePaths.forEach(sPath -> cartesianProduct.add(emptyPathTuple(sPath, null)));
+		}else {
+			cartesianProduct.addAll(Sets.cartesianProduct(sourcePaths,targetPaths));
+		}
+			
+		return cartesianProduct;
+			
+	}
+	
+	private List<Path> emptyPathTuple(Path sourcePath, Path targetPath){
+		List<Path> result = new ArrayList<Path>();
+		result.add(sourcePath);
+		result.add(targetPath);
+		return result;
+	}
+	
 	
 	/** 
 	 *  Applies the main rule and stores its links if required
@@ -196,20 +225,20 @@ public class Teide  {
 		String initialPathVariable = null;
 		String pathSparql = null;
 		String newVar = null;
-		
-		// Retrieve varaibles to replace in both path and query
-		mainVariable = SPARQLFactory.getMainVariable(query);
-		lastPathVariable = path.getLastVariable();
-		initialPathVariable = path.getInitialVariable();
-		// Replace variables in path, i.e., connect path with query variables
-		pathSparql = path.toSPARQL();
-		pathSparql = pathSparql.replace(lastPathVariable, mainVariable[0]);
-		// Append path to query
-		newVar = SPARQLFactory.generateFreshVar();
-		query = query.replace("{", "{\n"+pathSparql)
-					 .replace(initialPathVariable, newVar)
-					 .replace("DISTINCT "+mainVariable[0], "DISTINCT "+newVar );
-		
+		if(path!=null) {
+			// Retrieve varaibles to replace in both path and query
+			mainVariable = SPARQLFactory.getMainVariable(query);
+			lastPathVariable = path.getLastVariable();
+			initialPathVariable = path.getInitialVariable();
+			// Replace variables in path, i.e., connect path with query variables
+			pathSparql = path.toSPARQL();
+			pathSparql = pathSparql.replace(lastPathVariable, mainVariable[0]);
+			// Append path to query
+			newVar = SPARQLFactory.generateFreshVar();
+			query = query.replace("{", "{\n"+pathSparql)
+						 .replace(initialPathVariable, newVar)
+						 .replace("DISTINCT "+mainVariable[0], "DISTINCT "+newVar );
+		}
 		return query;
 	}
 	
